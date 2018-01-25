@@ -2,18 +2,18 @@
 #include "conv_layer.h"
 
 void conv_layer(float weights[K*K*ID*OD],
-              float biases[MAX_CONV_OUTPUT],
-              float input[MAX_CONV_INPUT*MAX_BATCH],
-              float output[MAX_CONV_OUTPUT*MAX_BATCH],
-	      const int b,
-	      const int od,
-	      const int ox,
-	      const int oy,
-	      const int id,
-	      const int ix,
-	      const int iy,
-	      const int s,
-	      const int k)
+                float biases[OD],
+                float input[MAX_CONV_INPUT*MAX_BATCH],
+                float output[MAX_CONV_OUTPUT*MAX_BATCH],
+	              const int b,
+	              const int od,
+	              const int ox,
+	              const int oy,
+	              const int id,
+	              const int ix,
+	              const int iy,
+	              const int s,
+	              const int k)
 {
   // Batch
   for (int b_=0; b_< b; b_++)
@@ -50,7 +50,7 @@ void conv_layer(float weights[K*K*ID*OD],
 
           // Activaton Function
           output[b_*od*ox*oy + o_d*ox*oy + o_y*ox + o_x] = 
-                 max(0.0f, output[b_*od*ox*oy + o_d*ox*oy + o_y*ox + o_x]);
+                 std::max(0.0f, output[b_*od*ox*oy + o_d*ox*oy + o_y*ox + o_x]);
         }
       }
     }
