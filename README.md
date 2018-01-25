@@ -25,7 +25,7 @@ To create a project with the sample unoptimized code and run csim and synth desi
 Running cosim on the unoptimized code will take a really long time. It has been commented out. Feel free to add it back to an optimized version.
 
 If you look at the testing functions (fc/fc_layer_test.cpp conv/conv_layer_test.cpp) you will notice that there is an imageDir string.
-This test function checks for weights, biase, input and golden reference to be in nn_params/<layer name>/weights, nn_params/<layer name>/biases, etc.
+This test function checks for weights, biase, input and golden reference to be in nn_params / <layer name> / weights, nn_params / <layer name> / biases, etc.
 
 To test other layers you would have to change the string to point to another directory.
 
