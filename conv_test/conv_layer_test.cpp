@@ -21,8 +21,8 @@ int main()
   string imageDir = "nn_params/conv1_7x7_s2/";
   vector<int> input_params = readFile(imageDir + "/input", inputs, MAX_CONV_INPUT *MAX_BATCH);
   vector<int> output_params = readFile(imageDir + "/output", gold_outputs, MAX_CONV_OUTPUT * MAX_BATCH);
-  vector<int> weight_params = readFile(imageDir + "/weights", weights, ID*OD*K*K);
-  vector<int> bias_params = readFile(imageDir +"/biases", biases, OD);
+  vector<int> weight_params = readFile(imageDir + "/weights", weights, MAX_OUTPUT_DIMS*MAX_INPUT_DIMS*MAX_KERNEL_SIZE*MAX_KERNEL_SIZE);
+  vector<int> bias_params = readFile(imageDir +"/biases", biases, MAX_OUTPUT_DIMS);
 
   int num_inputs = 1;
   int num_outputs = 1;

@@ -1,19 +1,19 @@
 #include <algorithm>
 #include "conv_layer.h"
 
-void conv_layer(float weights[K*K*ID*OD],
-                float biases[OD],
+void conv_layer(float weights[MAX_INPUT_DIMS * MAX_OUTPUT_DIMS * MAX_KERNEL_SIZE * MAX_KERNEL_SIZE],
+                float biases[MAX_OUTPUT_DIMS],
                 float input[MAX_CONV_INPUT*MAX_BATCH],
                 float output[MAX_CONV_OUTPUT*MAX_BATCH],
-	              const int b,
-	              const int od,
-	              const int ox,
-	              const int oy,
-	              const int id,
-	              const int ix,
-	              const int iy,
-	              const int s,
-	              const int k)
+	            const int b,
+	            const int od,
+	            const int ox,
+	            const int oy,
+	            const int id,
+	            const int ix,
+	            const int iy,
+	            const int s,
+	            const int k)
 {
   // Batch
   for (int b_=0; b_< b; b_++)
