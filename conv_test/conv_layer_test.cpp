@@ -43,10 +43,14 @@ int main()
   for(int i=0; i<bias_params.size();i++)
       num_biases*=bias_params[i];
 
-  if (num_inputs < 0 || num_inputs > MAX_CONV_INPUT ||
-      num_outputs < 0 || num_outputs > MAX_CONV_OUTPUT ||
-      num_weights > ID*OD*K*K ||
-      num_biases > OD)
+  if (num_inputs < 0 || num_inputs > MAX_CONV_INPUT || //check num input size
+      num_outputs < 0 ||  num_outputs > MAX_CONV_OUTPUT || // check num output size
+      num_weights != input_params[1] * output_params [1] * weight_params[2] * weight_params[3] || //num weight = id *od *k *k 
+      num_biases != output_params[1] || // one bias per output dimension
+      output_params[2] != output_params[3] ||  //output width (ox ) must equal output height (oy)
+      input_params[2] != input_params[3] ||  //input width (ix ) must equal output height (yy)
+      weight_params[2] != weight_params[3]   //kernel width (kx ) must equal kernel height (ky)
+      ) 
   {
     cerr << "Problem with input files\n";
     retval = 1;
@@ -64,24 +68,16 @@ int main()
     int k = weight_params[3];
     int s = (ix-k)/(ox-1);
 
-    cout << "kernel size " << k << endl;
-    cout << "id " << id << endl;
-    cout << "od " << od << endl;
-    cout << "ox " << ox << endl;
-    cout << "oy " << oy << endl;
-    cout << "s " << s << endl;
-    cout << "id " << id << endl;
-    cout << "ix " << ix << endl;
-    cout << "iy " << iy << endl;
-
     cout << "Begin Test\n"
-       << "Batch Size: " << b << "\n"
-       << "Num Inputs: " << num_inputs << "\n"
-       << "Num Outputs: " << num_outputs << "\n"
-       << "Num Weights: " << num_weights << "\n"
+       << "Batch Size: " << b << endl
+       << "Num Inputs: " << num_inputs << endl
+       << "Num Outputs: " << num_outputs << endl
+       << "Num Weights: " << num_weights << endl 
        << "Num Biases: " << num_biases << endl 
-       << "Num Stride: " << s << endl;
-
+       << "Input Dimensions " << b << " x " << id << " x " << ix << " x " << iy << endl
+       << "Output Dimensions " << b << " x " << od << " x " << ox << " x " << oy << endl
+       << "Kernel Dimensions " << od << " x " << id << " x " << k << " x " << k << endl
+       << "Stride Size: " << s << endl;
  
     // Run Accelerator
     conv_layer(weights, biases,
