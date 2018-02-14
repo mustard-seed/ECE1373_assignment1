@@ -41,7 +41,7 @@ FOR_INPUT:
       }
 
       // Compute activation
-      //output[b*num_outputs+o] = std::max(0.0f, output[b*num_outputs+o]);
+      output[b*num_outputs+o] = std::max(0.0f, output[b*num_outputs+o]);
     }
   }
 }
