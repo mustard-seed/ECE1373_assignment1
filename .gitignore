@@ -1,0 +1,15 @@
+##########Vivado HLS###############
+*.settings
+*.apc
+*.app
+*.cproject
+*.project
+*.xml
+*.aps
+**csim/
+**impl/
+**sim/
+**syn/
+**.autopilot/
+**.tcls/
+*.xml

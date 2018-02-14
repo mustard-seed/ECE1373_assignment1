@@ -1,0 +1,82 @@
+INFO: [HLS 200-10] Running '/opt/Xilinx/Vivado_HLS/2017.2/bin/unwrapped/lnx64.o/vivado_hls'
+INFO: [HLS 200-10] For user 'jamesliu' on host 'jamesliu-XPS-8700' (Linux_x86_64 version 4.13.0-32-generic) on Tue Feb 13 19:13:55 EST 2018
+INFO: [HLS 200-10] On os Ubuntu 16.04.3 LTS
+INFO: [HLS 200-10] In directory '/home/jamesliu/ECE1373/ECE1373_assignment1/vivado_hls_proj'
+INFO: [HLS 200-10] Opening project '/home/jamesliu/ECE1373/ECE1373_assignment1/vivado_hls_proj/fc_proj'.
+INFO: [HLS 200-10] Adding design file '../fc_test/fc_layer.cpp' to the project
+INFO: [HLS 200-10] Adding test bench file '../nn_params' to the project
+INFO: [HLS 200-10] Adding test bench file '../util/shared.cpp' to the project
+INFO: [HLS 200-10] Adding test bench file '../fc_test/fc_layer_test.cpp' to the project
+INFO: [HLS 200-10] Opening solution '/home/jamesliu/ECE1373/ECE1373_assignment1/vivado_hls_proj/fc_proj/solution_boundAndPipeline'.
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 10ns.
+WARNING: [HLS 200-40] Cannot find library '/opt/Xilinx/Vivado_HLS/2017.2/common/technology/xilinx/null/null.lib'.
+WARNING: [HLS 200-40] Cannot find library 'xilinx/null/null'.
+INFO: [HLS 200-10] Setting target device to 'xcvu095-ffvc1517-2-e'
+INFO: [HLS 200-10] Analyzing design file '../fc_test/fc_layer.cpp' ... 
+INFO: [HLS 200-10] Validating synthesis directives ...
+INFO: [HLS 200-111] Finished Checking Pragmas Time (s): cpu = 00:00:18 ; elapsed = 00:00:07 . Memory (MB): peak = 349.855 ; gain = 12.586 ; free physical = 7588 ; free virtual = 9309
+INFO: [HLS 200-111] Finished Linking Time (s): cpu = 00:00:18 ; elapsed = 00:00:07 . Memory (MB): peak = 349.855 ; gain = 12.586 ; free physical = 7579 ; free virtual = 9301
+INFO: [HLS 200-10] Starting code transformations ...
+INFO: [HLS 200-111] Finished Standard Transforms Time (s): cpu = 00:00:18 ; elapsed = 00:00:07 . Memory (MB): peak = 350.008 ; gain = 12.738 ; free physical = 7575 ; free virtual = 9299
+INFO: [HLS 200-10] Checking synthesizability ...
+INFO: [HLS 200-111] Finished Checking Synthesizability Time (s): cpu = 00:00:18 ; elapsed = 00:00:07 . Memory (MB): peak = 350.008 ; gain = 12.738 ; free physical = 7573 ; free virtual = 9297
+INFO: [XFORM 203-501] Unrolling loop 'FOR_INPUT' (../fc_test/fc_layer.cpp:38) in function 'fc_layer' partially with a factor of 4.
+INFO: [HLS 200-111] Finished Pre-synthesis Time (s): cpu = 00:00:18 ; elapsed = 00:00:08 . Memory (MB): peak = 483.488 ; gain = 146.219 ; free physical = 7552 ; free virtual = 9278
+WARNING: [XFORM 203-542] Cannot flatten a loop nest 'FOR_OUTPUT' (../fc_test/fc_layer.cpp:31:44) in function 'fc_layer' : 
+WARNING: [XFORM 203-542] the outer loop is not a perfect loop because there is nontrivial logic before entering the inner loop.
+INFO: [XFORM 203-541] Flattening a loop nest 'FOR_BATCH' (../fc_test/fc_layer.cpp:27:41) in function 'fc_layer'.
+INFO: [HLS 200-111] Finished Architecture Synthesis Time (s): cpu = 00:00:18 ; elapsed = 00:00:08 . Memory (MB): peak = 483.488 ; gain = 146.219 ; free physical = 7559 ; free virtual = 9284
+INFO: [HLS 200-10] Starting hardware synthesis ...
+INFO: [HLS 200-10] Synthesizing 'fc_layer' ...
+WARNING: [SYN 201-107] Renaming port name 'fc_layer/input' to 'fc_layer/input_r' to avoid the conflict with HDL keywords or other object names.
+WARNING: [SYN 201-107] Renaming port name 'fc_layer/output' to 'fc_layer/output_r' to avoid the conflict with HDL keywords or other object names.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Implementing module 'fc_layer' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining loop 'FOR_INPUT'.
+WARNING: [SCHED 204-68] Unable to enforce a carried dependence constraint (II = 1, distance = 1, offset = 0)
+   between 'fadd' operation ('tmp_17_3', ../fc_test/fc_layer.cpp:40) and 'fadd' operation ('tmp_14', ../fc_test/fc_layer.cpp:40).
+WARNING: [SCHED 204-68] Unable to enforce a carried dependence constraint (II = 2, distance = 1, offset = 0)
+   between 'fadd' operation ('tmp_17_3', ../fc_test/fc_layer.cpp:40) and 'fadd' operation ('tmp_14', ../fc_test/fc_layer.cpp:40).
+WARNING: [SCHED 204-68] Unable to enforce a carried dependence constraint (II = 3, distance = 1, offset = 0)
+   between 'fadd' operation ('tmp_17_3', ../fc_test/fc_layer.cpp:40) and 'fadd' operation ('tmp_14', ../fc_test/fc_layer.cpp:40).
+WARNING: [SCHED 204-68] Unable to enforce a carried dependence constraint (II = 4, distance = 1, offset = 0)
+   between 'fadd' operation ('tmp_17_3', ../fc_test/fc_layer.cpp:40) and 'fadd' operation ('tmp_14', ../fc_test/fc_layer.cpp:40).
+WARNING: [SCHED 204-68] Unable to enforce a carried dependence constraint (II = 11, distance = 1, offset = 0)
+   between 'fadd' operation ('tmp_17_3', ../fc_test/fc_layer.cpp:40) and 'fadd' operation ('tmp_14', ../fc_test/fc_layer.cpp:40).
+INFO: [SCHED 204-61] Pipelining result: Target II: 1, Final II: 12, Depth: 19.
+WARNING: [SCHED 204-21] Estimated clock period (13.5ns) exceeds the target (target clock period: 10ns, clock uncertainty: 1.25ns, effective delay budget: 8.75ns).
+WARNING: [SCHED 204-21] The critical path consists of the following:
+	'fadd' operation ('tmp_14', ../fc_test/fc_layer.cpp:40) (6.77 ns)
+	'fadd' operation ('tmp_17_1', ../fc_test/fc_layer.cpp:40) (6.77 ns)
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 7.79 seconds; current allocated memory: 69.111 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.04 seconds; current allocated memory: 69.660 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'fc_layer' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-500] Setting interface mode on port 'fc_layer/weights' to 'ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'fc_layer/biases' to 'ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'fc_layer/input_r' to 'ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'fc_layer/output_r' to 'ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'fc_layer/batch_size' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'fc_layer/num_inputs' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'fc_layer/num_outputs' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on function 'fc_layer' to 'ap_ctrl_hs'.
+INFO: [SYN 201-210] Renamed object name 'fc_layer_fadd_32ns_32ns_32_4_full_dsp' to 'fc_layer_fadd_32nbkb' due to the length limit 20
+INFO: [SYN 201-210] Renamed object name 'fc_layer_fmul_32ns_32ns_32_2_max_dsp' to 'fc_layer_fmul_32ncud' due to the length limit 20
+INFO: [RTGEN 206-100] Generating core module 'fc_layer_fadd_32nbkb': 1 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'fc_layer_fmul_32ncud': 1 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'fc_layer'.
+INFO: [HLS 200-111]  Elapsed time: 0.07 seconds; current allocated memory: 70.657 MB.
+INFO: [HLS 200-111] Finished generating all RTL models Time (s): cpu = 00:00:19 ; elapsed = 00:00:08 . Memory (MB): peak = 483.488 ; gain = 146.219 ; free physical = 7545 ; free virtual = 9272
+INFO: [SYSC 207-301] Generating SystemC RTL for fc_layer.
+INFO: [VHDL 208-304] Generating VHDL RTL for fc_layer.
+INFO: [VLOG 209-307] Generating Verilog RTL for fc_layer.
+INFO: [HLS 200-112] Total elapsed time: 8.32 seconds; peak allocated memory: 70.657 MB.
