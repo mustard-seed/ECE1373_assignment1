@@ -1,0 +1,19 @@
+<AutoPilot:ProjectResources xmlns:AutoPilot="com.autoesl.autopilot.ui.directiveView">
+    <sourceFile name="">
+        <directive functionName="fc_layer" label="FOR_OUTPUT" functionLabel="">
+            <pragma name="UNROLL">
+                <option name="factor" value="8"/>
+            </pragma>
+        </directive>
+        <directive functionName="fc_layer" label="FOR_INPUT" functionLabel="">
+            <pragma name="PIPELINE"/>
+        </directive>
+        <directive functionName="fc_layer" label="FOR_INPUT" functionLabel="">
+            <pragma name="EXPRESSION_BALANCE"/>
+        </directive>
+        <directive functionName="fc_layer" label="FLOWREGION" functionLabel="">
+            <pragma name="DATAFLOW"/>
+        </directive>
+    </sourceFile>
+</AutoPilot:ProjectResources>
+

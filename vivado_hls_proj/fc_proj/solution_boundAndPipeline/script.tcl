@@ -5,7 +5,7 @@
 ############################################################
 open_project fc_proj
 set_top fc_layer
-add_files ../fc_test/fc_layer.cpp -cflags "-I ../vivado_hls_proj/fc_proj/"
+add_files ../fc_test/fc_layer.cpp -cflags "-DFC_DEFAULT"
 add_files -tb ../nn_params
 add_files -tb ../util/shared.cpp
 add_files -tb ../fc_test/fc_layer_test.cpp -cflags "-I../"
