@@ -11,7 +11,7 @@ open_solution "solution3"
 set_part {xcvu095-ffvc1517-2-e}
 create_clock -period 10 -name default
 #source "./dotProduct_prj/solution3/directives.tcl"
-csim_design -compiler gcc -setup
+csim_design -clean -compiler gcc -setup
 csynth_design
 cosim_design -trace_level all
 export_design -format ip_catalog

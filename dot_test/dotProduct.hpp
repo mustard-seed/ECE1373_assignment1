@@ -5,7 +5,7 @@ template <typename Type, int SIZE>
 Type dotProduct(Type vectorA[SIZE], Type vectorB[SIZE])
 {
 //#pragma HLS ARRAY_PARTITION variable=vectorB complete dim=0
-    Type sum = 0;
+	Type sum = 0;
     FOR_DOTPRODUCT:
     for (int i=0; i<SIZE; i++)
     {
@@ -13,7 +13,6 @@ Type dotProduct(Type vectorA[SIZE], Type vectorB[SIZE])
 #pragma HLS EXPRESSION_BALANCE
         sum += vectorA[i] * vectorB[i];
     }
-    
     return sum;
 }
 

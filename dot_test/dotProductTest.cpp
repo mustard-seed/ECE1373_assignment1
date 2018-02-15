@@ -47,11 +47,11 @@ int main()
 			for (int j=0; j<10; j++)
 			{
 				float err = matrixC[i][j] - matrixD[i][j];
-				total += err;
+				total += err*err;
 			}
 		}
 
-	cout << "Mean squared error: " << total / 100 << endl;
+	cout << "Mean squared error: " << total / 100.0 << endl;
 	return retval;
 }
 

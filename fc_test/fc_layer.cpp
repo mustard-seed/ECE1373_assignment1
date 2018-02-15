@@ -1,7 +1,11 @@
 #include <algorithm>
 #include <cassert>
 #include "fc_layer.h"
-#include "types.h"
+
+#ifdef FC_DOTENG
+#include "dotProduct.hpp"
+#endif
+
 /*
  * ECE1373 Code begins
  */
@@ -11,10 +15,10 @@
  * ECE1373 Code ends
  */
 
-void fc_layer(t_weight weights[MAX_INPUT_SIZE*MAX_OUTPUT_SIZE],
-              t_bias biases[MAX_OUTPUT_SIZE],
-              t_input input[MAX_INPUT_SIZE*MAX_BATCH],
-              t_output output[MAX_OUTPUT_SIZE*MAX_BATCH],
+void fc_layer(float weights[MAX_INPUT_SIZE*MAX_OUTPUT_SIZE],
+			  float biases[MAX_OUTPUT_SIZE],
+			  float input[MAX_INPUT_SIZE*MAX_BATCH],
+			  float output[MAX_OUTPUT_SIZE*MAX_BATCH],
               const int batch_size,
               const int num_inputs,
               const int num_outputs)
@@ -38,11 +42,11 @@ FOR_INPUT:
       // Accumulate weighted sum
       for (int i = 0; i < num_inputs; i++) {
 
-        output[b*num_outputs+o] += input[b*num_inputs+i]*weights[o*num_inputs+i];
+        output[b*num_outputs+o] += (t_weight)input[b*num_inputs+i] * (t_weight)weights[o*num_inputs+i];
       }
 
       // Compute activation
-      output[b*num_outputs+o] = std::max(0.0f, output[b*num_outputs+o]);
+      output[b*num_outputs+o] = std::max(0.0f, ((t_output)output[b*num_outputs+o]);
     }
   }
 #elif defined FC_PIPELINEUNROLL
@@ -60,17 +64,17 @@ FOR_OUTPUT:
       // Set bias
       output[b*num_outputs+o] = biases[o];
 
-//Set buffer for wegiths
-      t_weight *pbuff_weights = &weights[o*num_inputs];
+////Set buffer for wegiths
+//      t_weight *pbuff_weights = &weights[o*num_inputs];
 
 FOR_INPUT:
       // Accumulate weighted sum
       for (int i = 0; i < num_inputs; i++) {
 
-        output[b*num_outputs+o] += input[b*num_inputs+i]*pbuff_weights[i];
+        output[b*num_outputs+o] += input[b*num_inputs+i]* (t_weight) weights[o*num_inputs+i];
       }
       // Compute activation
-      output[b*num_outputs+o] = std::max(0.0f, output[b*num_outputs+o]);
+      output[b*num_outputs+o] = std::max(0.0f, (t_output) output[b*num_outputs+o]);
     }
   }
 #elif defined FC_DOTENG
@@ -155,8 +159,8 @@ FOR_STREAMOUT_INNNER:
 			{
 				if (o+m < num_outputs && b+l < batch_size)
 				{
-					t_output temp = outputBuffer[l][m] + biases[o+m];
-					output[(b+l)*num_outputs + o + m] = std::max(0.0f, temp);
+					t_output temp = outputBuffer[l][m] + (t_output) biases[o+m];
+					output[(b+l)*num_outputs + o + m] = std::max((t_output) 0.0, temp);
 				}
 			}
 		}

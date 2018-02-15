@@ -12,10 +12,10 @@ add_files -tb ../util/shared.cpp
 add_files -tb ../util/shared.h
 add_files -tb ../fc_test/types.h
 add_files -tb ../nn_params
-open_solution "solution1"
-set_part {xcvu095-ffvc1517-2-e} -tool vivado
+open_solution "solution_short"
+set_part {xcvu095-ffvc1517-2-e}
 create_clock -period 5 -name default
-#source "./fc_useDotEngine/solution1/directives.tcl"
+#source "./fc_useDotEngine/solution_short/directives.tcl"
 csim_design -clean -compiler gcc -setup
 csynth_design
 cosim_design -O -trace_level port

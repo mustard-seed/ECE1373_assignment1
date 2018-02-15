@@ -1,7 +1,6 @@
 #ifndef _FC_LAYER_H
 #define _FC_LAYER_H
-
-#include "dotProduct.hpp"
+#include "types.h"
 
 #define MAX_BATCH 10
 #define MAX_INPUT_SIZE 1024

@@ -4,7 +4,6 @@ void dotProductWrapper (float matrixA[10][10], float matrixB[10][10], float matr
 {
 #pragma HLS ARRAY_PARTITION variable=matrixC complete dim=0
 #pragma HLS ARRAY_PARTITION variable=matrixA complete dim=1
-    float sum = 0;
     FOR_TESTING_OUT:   for (int colC = 0; colC < 10; colC++) {
         float buffBCol [10];
 #pragma HLS ARRAY_PARTITION variable=buffBCol complete dim=0
@@ -18,7 +17,7 @@ FOR_INNER:
 		for (int rowC = 0; rowC < 10; rowC++)
         {
 #pragma HLS UNROLL skip_exit_check
-            matrixC[rowC][colC] = dotProduct<float, 10> (buffBCol, matrixA[rowC]);
+			matrixC[rowC][colC] = dotProduct<float, 10> (buffBCol, matrixA[rowC]);
         }
     }
 }
