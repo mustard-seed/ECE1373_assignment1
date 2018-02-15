@@ -13,5 +13,5 @@ create_clock -period 10 -name default
 #source "./dotProduct_prj/solution3/directives.tcl"
 csim_design -compiler gcc -setup
 csynth_design
-cosim_design
+cosim_design -trace_level all
 export_design -format ip_catalog
