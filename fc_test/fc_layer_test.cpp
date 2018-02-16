@@ -63,7 +63,12 @@ int main()
     for (int i = 0; i < batch_size*num_outputs; i++)
     {
       float err = fabs(outputs[i] - gold_outputs[i]);
+    	//float err = fabs(0.0f - gold_outputs[i]);
       total += err*err;
+      if (i < 20)
+      {
+    	  cout << i <<"th: "<<"RTL = "<<outputs[i]<<" Gold = "<<gold_outputs[i]<<endl;
+      }
     }
 
     float avg_error = total/(batch_size*num_outputs);

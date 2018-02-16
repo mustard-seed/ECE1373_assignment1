@@ -6,9 +6,10 @@
 #include "ap_int.h"
 #include "ap_fixed.h"
 
-#define SHORT  //Used for short solutions only!!!!
+//#define SHORT  //Used for short solutions only!!!!
 
 #if !defined(SHORT)
+typedef float t_input;
 typedef float t_output;
 typedef float t_weight;
 typedef float t_bias;

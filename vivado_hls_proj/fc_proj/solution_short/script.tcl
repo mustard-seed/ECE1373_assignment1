@@ -9,11 +9,11 @@ add_files ../fc_test/fc_layer.cpp -cflags "-DFC_DEFAULT"
 add_files -tb ../fc_test/fc_layer_test.cpp -cflags "-I../."
 add_files -tb ../util/shared.cpp
 add_files -tb ../nn_params
-open_solution "solution_pipelineaAndUnroll"
+open_solution "solution_short"
 set_part {xcvu095-ffvc1517-2-e}
 create_clock -period 10 -name default
-#source "./fc_proj/solution_pipelineaAndUnroll/directives.tcl"
+#source "./fc_proj/solution_short/directives.tcl"
 csim_design -clean -compiler gcc -setup
 csynth_design
-cosim_design
+cosim_design -O -trace_level all
 export_design -format ip_catalog

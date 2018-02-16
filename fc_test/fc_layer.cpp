@@ -42,11 +42,11 @@ FOR_INPUT:
       // Accumulate weighted sum
       for (int i = 0; i < num_inputs; i++) {
 
-        output[b*num_outputs+o] += (t_weight)input[b*num_inputs+i] * (t_weight)weights[o*num_inputs+i];
+        output[b*num_outputs+o] = (t_weight) output[b*num_outputs+o] + (t_weight)input[b*num_inputs+i] * (t_weight)weights[o*num_inputs+i];
       }
 
       // Compute activation
-      output[b*num_outputs+o] = std::max(0.0f, ((t_output)output[b*num_outputs+o]);
+      output[b*num_outputs+o] = std::max(0.0f, (float)output[b*num_outputs+o]);
     }
   }
 #elif defined FC_PIPELINEUNROLL
@@ -71,10 +71,10 @@ FOR_INPUT:
       // Accumulate weighted sum
       for (int i = 0; i < num_inputs; i++) {
 
-        output[b*num_outputs+o] += input[b*num_inputs+i]* (t_weight) weights[o*num_inputs+i];
+        output[b*num_outputs+o] += input[b*num_inputs+i]* (float) weights[o*num_inputs+i];
       }
       // Compute activation
-      output[b*num_outputs+o] = std::max(0.0f, (t_output) output[b*num_outputs+o]);
+      output[b*num_outputs+o] = std::max(0.0f, (float) output[b*num_outputs+o]);
     }
   }
 #elif defined FC_DOTENG
@@ -101,35 +101,37 @@ FOR_OUTPUT:
 			//TODO: Add bias back!!!!!
 
 			//Load Buffers
-			static t_weight weightBuffer [BLOCKDIM][BLOCKDIM]; //Weight buffer is ROW major
-			static t_input inputBuffer [BLOCKDIM][BLOCKDIM]; //Input buffer is COL major
+			t_weight weightBuffer [BLOCKDIM][BLOCKDIM]; //Weight buffer is ROW major
+			t_input inputBuffer [BLOCKDIM][BLOCKDIM]; //Input buffer is COL major
 #pragma HLS ARRAY_PARTITION variable=weightBuffer complete dim = 0
 #pragma HLS ARRAY_PARTITION variable=inputBuffer complete dim = 0
 			FOR_INBUFFERS_OUTER:
 			for (int l = 0; l < BLOCKDIM; l++)
 			{
 #pragma HLS PIPELINE
+//#pragma HLS LOOP_FLATTEN off
 				FOR_INBUFFERS_INNER:
 				for (int m = 0; m < BLOCKDIM; m++)
 				{
+//#pragma HLS LOOP_FLATTEN off
 					//Load weight buffer only
 					if (o+l < num_outputs && m+i < num_inputs)
 					{
-						weightBuffer [l][m] = weights[num_inputs*(o+l) + m+i];
+						weightBuffer [l][m] = (t_weight) weights[num_inputs*(o+l) + m+i];
 					}
 					else
 					{
-						weightBuffer [l][m] = 0;
+						weightBuffer [l][m] = (t_weight) 0.0f;
 					}
 
 					//Load input buffer only
 					if (i+m < num_inputs && l + b < batch_size)
 					{
-						inputBuffer [l][m] = input[(b+l)*num_inputs + m + i];
+						inputBuffer [l][m] = (t_weight) input[(b+l)*num_inputs + m + i];
 					}
 					else
 					{
-						inputBuffer [l][m] = 0;
+						inputBuffer [l][m] = (t_weight) 0.0f;
 					}
 				}
 			}
@@ -139,11 +141,18 @@ FOR_MATMATMUL_OUTER:
 			for (int l = 0; l < BLOCKDIM; l++)
 			{
 #pragma HLS UNROLL skip_exit_check
+//#pragma HLS PIPELINE off
+//#pragma HLS LOOP_FLATTEN off
 FOR_MATMATMUL_INNER:
 				for (int m = 0; m < BLOCKDIM; m++)
 				{
 #pragma HLS UNROLL skip_exit_check
-					outputBuffer[l][m] += dotProduct<t_weight, BLOCKDIM>(weightBuffer[m], inputBuffer[l]);
+//#pragma HLS PIPELINE off
+//#pragma HLS LOOP_FLATTEN off
+					//t_weight temp = 0;
+//#pragma HLS DEPENDENCE variable=temp pointer intra RAW true
+					dotProduct<t_weight, BLOCKDIM>(weightBuffer[m], inputBuffer[l], &outputBuffer[l][m]);
+					//outputBuffer[l][m] = temp;
 				}
 			}
 		}
@@ -154,13 +163,16 @@ FOR_MATMATMUL_INNER:
 FOR_STREAMOUT_OUTER:
 		for (int l = 0; l < BLOCKDIM; l++)
 		{
+//#pragma HLS LOOP_FLATTEN off
 FOR_STREAMOUT_INNNER:
 		for (int m = 0; m < BLOCKDIM; m++)
 			{
+//#pragma HLS LOOP_FLATTEN off
 				if (o+m < num_outputs && b+l < batch_size)
 				{
-					t_output temp = outputBuffer[l][m] + (t_output) biases[o+m];
-					output[(b+l)*num_outputs + o + m] = std::max((t_output) 0.0, temp);
+					t_output temp = (t_output) outputBuffer[l][m] + (t_output) biases[o+m];
+//#pragma HLS RESOURCE variable=temp core=AddSub
+					output[(b+l)*num_outputs + o + m] = (float) std::max((float) 0.0, (float) (temp));
 				}
 			}
 		}
