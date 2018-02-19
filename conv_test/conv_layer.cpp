@@ -346,11 +346,11 @@ FOR_WRITE_OUTPUT_WIDTH:
 #endif
 #if defined(CONV_TILE) || defined(CONV_TILENOPIPE)
 #if defined(CONV_TILE)
-#define OFTILE_SIZE 18 //Parallelism in output feature map
+#define OFTILE_SIZE 16 //Parallelism in output feature map
 #define IFTILE_SIZE 2 //Parallelism in input feature map
 #define FLATTILE_SIZE 2 //2D tile size
 #elif defined(CONV_TILENOPIPE)
-#define OFTILE_SIZE 10 //Parallelism in output feature map
+#define OFTILE_SIZE 16 //Parallelism in output feature map
 #define IFTILE_SIZE 2 //Parallelism in input feature map
 #define FLATTILE_SIZE 2 //2D tile size
 #endif
@@ -386,9 +386,10 @@ for (int b_=0; b_< b; b_++)
 FOR_OUTPUT_DIM_D:
  for (int o_d = 0; o_d < od; o_d += OFTILE_SIZE)
  {
-   int outputKernelOffset;
+   int outputKernelOffset, outputKernelVolumeOffset;
 #pragma HLS RESOURCE variable=outputKernelOffset core=fMul_nodsp
    outputKernelOffset = o_d*outputArea;
+   outputKernelVolumeOffset = o_d*kernelVolume;
    // Output Y Dimension
 FOR_OUTPUT_DIM_Y:
    for (int o_y = 0; o_y < oy; o_y ++)
@@ -434,25 +435,29 @@ FOR_INPUT_DIM_X:
 
 			//Load input and kernels
 FOR_LOAD_INPUTKERNEL_Z:
-			   for (int inputCountLoadZ = 0; inputCountLoadZ < IFTILE_SIZE; inputCountLoadZ++)
+			   for (int inputCountLoadZ = 0, inputZ = i_d, inputZInArea = i_d*inputArea, inputZKArea = i_d*kernelArea;
+					    inputCountLoadZ < IFTILE_SIZE;
+					   inputCountLoadZ++, inputZ++, inputZInArea += inputArea, inputZKArea += kernelArea)
 			   {
 #pragma HLS PIPELINE
 FOR_LOAD_INPUTKERNEL_Y:
-				   for (int countLoadY = 0; countLoadY < FLATTILE_SIZE; countLoadY++)
+				   for (int countLoadY = 0, kernelY = iiy, kernelYOf = iiy*k, inputY = i_y, inputYLine = i_y*ix;
+						   countLoadY < FLATTILE_SIZE;
+						   countLoadY++, kernelY++, kernelYOf += k, inputY++, inputYLine += ix)
 				   {
 					   FOR_LOAD_INPUTKERNEL_X:
-					   for (int countLoadX = 0; countLoadX < FLATTILE_SIZE; countLoadX++)
+					   for (int countLoadX = 0, inputX = i_x; countLoadX < FLATTILE_SIZE; countLoadX++, inputX++)
 					   {
-						   int inputZ = i_d + inputCountLoadZ;
-						   int inputY = i_y + countLoadY;
-						   int inputX = i_x + countLoadX;
+						   //int inputZ = i_d + inputCountLoadZ;
+						   //int inputY = i_y + countLoadY;
+						   //int inputX = i_x + countLoadX;
 						   int inputIndex = inputCountLoadZ*FLATTILE_SIZE*FLATTILE_SIZE
 								   + countLoadY* FLATTILE_SIZE
 								   + countLoadX;
 						   if (inputZ < id && inputY < iy && inputX < ix)
 						   {
 							   inputBuffer[inputIndex] =
-									   input[batchOffsetInput + inputZ * inputArea + inputY*ix + inputX];
+									   input[batchOffsetInput + inputZInArea + inputYLine + inputX];
 						   }
 						   else
 						   {
@@ -460,17 +465,22 @@ FOR_LOAD_INPUTKERNEL_Y:
 						   }
 
 						   int kernelZ = inputZ;
-						   int kernelY = iiy + countLoadY;
+						   //int kernelY = iiy + countLoadY;
 						   int kernelX = iix + countLoadX;
 						   FOR_LOAD_INPUTKERNEL_Z2:
-						   for (int countLoadKernel=0; countLoadKernel < OFTILE_SIZE; countLoadKernel++)
+						   for (int countLoadKernel=0, kernelZOOf = outputKernelVolumeOffset;
+								   countLoadKernel < OFTILE_SIZE;
+								   countLoadKernel++, kernelZOOf += kernelVolume)
 						   {
 							   int kernelZO = countLoadKernel + o_d;
 							   if (kernelZO < od && kernelZ < id && kernelY < k && kernelX < k)
 							   {
+//								   weightBuffer[countLoadKernel][inputIndex] =
+//										   weights[kernelZO*kernelVolume + kernelZ*kernelArea
+//								   					+ kernelY*k + kernelX];
 								   weightBuffer[countLoadKernel][inputIndex] =
-										   weights[kernelZO*kernelVolume + kernelZ*kernelArea
-								   					+ kernelY*k + kernelX];
+										   weights[kernelZOOf + inputZKArea
+								   					+ kernelYOf + kernelX];
 							   }
 							   else
 							   {

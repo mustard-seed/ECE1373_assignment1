@@ -18,5 +18,5 @@ create_clock -period 10 -name default
 #source "./fc_useDotEngine/solution1/directives.tcl"
 csim_design -clean -compiler gcc -setup
 csynth_design
-cosim_design -O -trace_level port
+cosim_design -O -trace_level port -tool xsim
 export_design -rtl verilog -format ip_catalog

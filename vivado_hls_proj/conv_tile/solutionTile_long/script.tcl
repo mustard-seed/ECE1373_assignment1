@@ -18,4 +18,4 @@ source "./conv_tile/solutionTile_long/directives.tcl"
 csim_design -clean -compiler gcc -setup
 csynth_design
 cosim_design -O -trace_level port
-export_design -format ip_catalog
+export_design -flow impl -rtl verilog -format ip_catalog
