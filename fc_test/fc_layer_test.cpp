@@ -65,7 +65,7 @@ int main()
       float err = fabs(outputs[i] - gold_outputs[i]);
     	//float err = fabs(0.0f - gold_outputs[i]);
       total += err*err;
-      if (i < 20)
+      if (i < 200 && i > 100)
       {
     	  cout << i <<"th: "<<"RTL = "<<outputs[i]<<" Gold = "<<gold_outputs[i]<<endl;
       }

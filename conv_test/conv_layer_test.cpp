@@ -91,6 +91,10 @@ int main()
     {
       float err = fabs(outputs[i] - gold_outputs[i]);
       total += err*err;
+      if (err > 1e-3 && i < 16.1 * ox * oy)
+      {
+    	  cout << i <<"th: "<<"RTL = "<<outputs[i]<<" Gold = "<<gold_outputs[i]<<endl;
+      }
     }
     float avg_error = total/(b *num_outputs);
     cout << "Mean Square Error " << avg_error << endl;

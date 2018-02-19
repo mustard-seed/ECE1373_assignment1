@@ -5,8 +5,8 @@
 using namespace std;
 
 
-float matrixA[10][10], matrixB[10][10], matrixC[10][10];
-local_t matrixAt[10][10], matrixBt[10][10], matrixCt[10][10];
+float matrixA[5][5], matrixB[5][5], matrixC[5][5];
+local_t matrixAt[5][5], matrixBt[5][5], matrixCt[5][5];
 
 int main()
 {
@@ -15,9 +15,9 @@ int main()
 	/*
 	 * Initialize test arrays
 	 */
-	for (int i=0; i < 10; i++)
+	for (int i=0; i < 5; i++)
 	{
-		for (int j=0; j<10; j++)
+		for (int j=0; j<5; j++)
 		{
 			matrixA[i][j] = (float) (i+j-10.0f);
 			matrixAt[i][j] = (local_t) (i+j-10.0f);
@@ -30,12 +30,12 @@ int main()
 	 * Calculate the correct result
 	 */
 
-	for (int i=0; i < 10; i++)
+	for (int i=0; i < 5; i++)
 	{
-		for (int j=0; j<10; j++)
+		for (int j=0; j<5; j++)
 		{
 			matrixC[i][j] = 0;
-			for (int k=0; k<10; k++)
+			for (int k=0; k<5; k++)
 			{
 				matrixC[i][j] += matrixA[i][k]*matrixB[k][j];
 			}
@@ -47,9 +47,9 @@ int main()
 
 	float total = 0.0f;
 
-	for (int i=0; i < 10; i++)
+	for (int i=0; i < 5; i++)
 		{
-			for (int j=0; j<10; j++)
+			for (int j=0; j<5; j++)
 			{
 				float err = matrixC[i][j] - (float) matrixCt[i][j];
 				total += err*err;

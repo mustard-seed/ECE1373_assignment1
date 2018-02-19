@@ -10,8 +10,8 @@ add_files -tb ../dot_test/dotProductTest.cpp
 open_solution "solution2"
 set_part {xcvu095-ffvc1517-2-e}
 create_clock -period 10 -name default
-#source "./dotProduct_prj/solution2/directives.tcl"
-csim_design -clean -compiler gcc -setup
+source "./dotProduct_prj/solution2/directives.tcl"
+csim_design -clean -compiler gcc
 csynth_design
 cosim_design
 export_design -format ip_catalog

@@ -12,7 +12,7 @@ add_files -tb ../util/shared.h
 add_files -tb ../nn_params
 open_solution "solution_short"
 set_part {xcvu095-ffvc1517-2-e}
-create_clock -period 10 -name default
+create_clock -period 5 -name default
 #source "./conv_pipelineInner/solution_short/directives.tcl"
 csim_design -compiler gcc -setup
 csynth_design

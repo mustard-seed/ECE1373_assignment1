@@ -3,11 +3,6 @@
         <directive functionName="fc_layer" label="FOR_INPUT" functionLabel="">
             <pragma name="PIPELINE"/>
         </directive>
-        <directive functionName="fc_layer" label="FOR_OUTPUT" functionLabel="">
-            <pragma name="UNROLL">
-                <option name="factor" value="4"/>
-            </pragma>
-        </directive>
     </sourceFile>
 </AutoPilot:ProjectResources>
 

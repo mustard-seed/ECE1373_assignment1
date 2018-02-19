@@ -16,5 +16,5 @@ create_clock -period 10 -name default
 #source "./conv_pipelineInner/solution1/directives.tcl"
 csim_design -compiler gcc -setup
 csynth_design
-cosim_design
+cosim_design -O -trace_level port
 export_design -format ip_catalog

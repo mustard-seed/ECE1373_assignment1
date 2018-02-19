@@ -13,7 +13,7 @@ open_solution "solution1"
 set_part {xcvu095-ffvc1517-2-e} -tool vivado
 create_clock -period 10 -name default
 #source "./conv_proj/solution1/directives.tcl"
-csim_design -clean -compiler gcc
+csim_design -clean -compiler gcc -setup
 csynth_design
-cosim_design
+cosim_design -O -trace_level port
 export_design -format ip_catalog
